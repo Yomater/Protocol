@@ -1,0 +1,26 @@
+{
+  "buildingFunctions": [
+    "budynki szkół i instytucji badawczych",
+    "budynki hoteli",
+    "budynki szpitali i zakładów opieki medycznej",
+    "pozostałe budynki zakwaterowania turystycznego",
+    "budynki kultury fizycznej",
+    "budynki biurowe",
+    "budynki gospodarstwa rolnego",
+    "budynki handlowo-usługowe",
+    "budynki kultu religijnego",
+    "budynki łączności dworców i terminali",
+    "budynek zabytkowy",
+    "garaże",
+    "pozostałe budynki niemieszkalne",
+    "budynki przemysłowe",
+    "budynki mieszkalne jednorodzinne",
+    "zbiorniki, silosy lub budynki magazynowe",
+    "budynki o dwóch mieszkaniach",
+    "ogólnodostępne budynki kulturalne",
+    "budynki o trzech i więcej mieszkaniach",
+    "muzea lub biblioteki",
+    "budynki zbiorowego zamieszkania",
+    "budynek mieszkalno-usługowy"
+  ]
+}

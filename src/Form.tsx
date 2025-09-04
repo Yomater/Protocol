@@ -1,11 +1,11 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 
 type FormData = {
 	name: string
 	email: string
 }
 
-export default function ContactForm() {
+const ContactForm: React.FC =() => {
 	const [form, setForm] = useState<FormData>({ name: '', email: '' })
 	const [message, setMessage] = useState<string>('')
 
@@ -51,3 +51,5 @@ export default function ContactForm() {
 		</form>
 	)
 }
+
+export default ContactForm
