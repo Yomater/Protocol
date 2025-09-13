@@ -4,13 +4,14 @@ import type { ReactNode } from 'react'
 interface SectionProps {
 	title?: string
 	children: ReactNode
+	classes?: string
 }
 
-const Section: React.FC<SectionProps> = ({ title, children }) => {
+const Section: React.FC<SectionProps> = ({ classes, title, children }) => {
 	return (
-		<div className='space-y-2'>
+		<div className={'space-y-2 ' + classes}>
 			{title && <h2 className='text-lg font-semibold'>{title}</h2>}
-			<div className='flex gap-4 flex-wrap'>{children}</div>
+			<div >{children}</div>
 		</div>
 	)
 }
