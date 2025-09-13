@@ -1,4 +1,3 @@
-import './App.css'
 import { useState } from 'react'
 import Section from './Components/Section'
 import StepButton from './Components/StepButton'
@@ -11,29 +10,42 @@ function App() {
 
 	return (
 		<div className='w-full px-4 py-6 bg-gray-50'>
-			<div className='mx-auto max-w-screen-md space-y-6'>
+			<div className='mx-auto max-w-screen-md space-y-6 text-center'>
 				<h1 className='text-2xl font-bold'>Protokół inwentaryzacji budynku</h1>
 
-				<Section classes='grid grid-cols-1 sm:grid-cols-2 gap-4'>
+				<Section classes='grid grid-cols-1 gap-4'>
 					<StepButton label='Adres i funkcja' onClick={() => setActiveStep('adres')} active={activeStep === 'adres'} />
 				</Section>
 
-				<Section classes='grid grid-cols-1 sm:grid-cols-2 gap-4'>
-					<StepButton label='Termoizolacja' onClick={() => setActiveStep('termo')} active={activeStep === 'termo'} />
-					<StepButton label='Źródła ciepła' onClick={() => setActiveStep('zrodla')} active={activeStep === 'zrodla'} />
-					<StepButton
-						label='Dane uczestnika i właściciela'
-						onClick={() => setActiveStep('dane')}
-						active={activeStep === 'dane'}
-					/>
-					<StepButton
-						label='Przewody kominowe'
-						onClick={() => setActiveStep('kominy')}
-						active={activeStep === 'kominy'}
-					/>
+				<Section classes='grid grid-cols-2 gap-4'>
+					<div className='flex flex-col space-y-2'>
+						<StepButton
+							classes=''
+							label='Termoizolacja'
+							onClick={() => setActiveStep('termo')}
+							active={activeStep === 'termo'}
+						/>
+						<StepButton
+							label='Źródła ciepła'
+							onClick={() => setActiveStep('zrodla')}
+							active={activeStep === 'zrodla'}
+						/>
+					</div>
+					<div className='flex flex-col space-y-2'>
+						<StepButton
+							label='Dane uczestnika i właściciela'
+							onClick={() => setActiveStep('dane')}
+							active={activeStep === 'dane'}
+						/>
+						<StepButton
+							label='Przewody kominowe'
+							onClick={() => setActiveStep('kominy')}
+							active={activeStep === 'kominy'}
+						/>
+					</div>
 				</Section>
 
-				<Section classes='grid grid-cols-1 sm:grid-cols-2 gap-4'>
+				<Section classes='grid grid-cols-1 gap-4'>
 					<StepButton
 						label='Wysyłanie danych'
 						onClick={() => setActiveStep('wysylka')}
@@ -63,8 +75,6 @@ function App() {
 				</Modal>
 			</div>
 		</div>
-
-		
 	)
 }
 

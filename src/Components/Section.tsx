@@ -9,9 +9,9 @@ interface SectionProps {
 
 const Section: React.FC<SectionProps> = ({ classes, title, children }) => {
 	return (
-		<div className={'space-y-2 ' + classes}>
+		<div className={classes}>
 			{title && <h2 className='text-lg font-semibold'>{title}</h2>}
-			<div >{children}</div>
+			{children}
 		</div>
 	)
 }
