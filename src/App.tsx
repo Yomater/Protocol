@@ -11,6 +11,16 @@ function App() {
 	const [localType, setLocalType] = useState<'mieszkalny' | 'niemieszkalny' | 'inny'>('mieszkalny')
 	const [otherType, setOtherType] = useState('')
 	const [area, setArea] = useState<number | ''>('')
+	const [participantName, setParticipantName] = useState('')
+	const [ownerLastName, setOwnerLastName] = useState('')
+	const [ownerFirstName, setOwnerFirstName] = useState('')
+	const [ownerEmail, setOwnerEmail] = useState('')
+	const [notes, setNotes] = useState('')
+
+	const [dymowe, setDymowe] = useState(0)
+	const [spalinowe, setSpalinowe] = useState(0)
+	const [wentylacyjne, setWentylacyjne] = useState(0)
+	const [awaryjne, setAwaryjne] = useState(0)
 
 	return (
 		<div className='w-full px-4 py-6 bg-gray-50'>
@@ -151,15 +161,168 @@ function App() {
 
 				<Modal
 					open={activeStep === 'termo'}
-					title='Źródła ciepła'
+					title='Inwentaryzacja budynku'
 					onClose={() => setActiveStep(null)}
 					classes='bg-white p-6 rounded-xl shadow-md'
 					color='yellow'>
-					<select className='border p-2 w-full'>
-						<option>Kocioł na paliwo stałe</option>
-						<option>Kocioł gazowy</option>
-						<option>Pompa ciepła</option>
-					</select>
+					{(() => {
+						const [form, setForm] = useState({
+							rokBudowy: '',
+							wysokoscKondygnacji: '',
+							ociepleniePodlogi: '',
+							ocieplenieDachu: '',
+							ocieplenieStropodachu: '',
+							stropNadPiwnica: '',
+							stanCO: '',
+							stopienOciepleniaScian: '',
+							gruboscOciepleniaScian: '',
+							ocieplenieStropow: '',
+							stanCWU: '',
+							wentylacja: '',
+							wymienionoOkna: 'nie',
+							rokWymianyOkien: '',
+							rodzajOkien: '',
+							wymienionoDrzwi: 'nie',
+							rokWymianyDrzwi: '',
+							planowanaTermo: 'nie',
+							planowanaTermoOpcje: [],
+							planowanaTermoInne: '',
+						})
+
+						const handleChange = (field: string, value: any) => setForm(prev => ({ ...prev, [field]: value }))
+
+						return (
+							<div className='space-y-4'>
+								{/* w razie podziału na dwie kolumny można użyć klas grid grid-cols-1 md:grid-cols-2 gap-4 */}
+								{/* 1. Rok budowy */}
+								<div>
+									<label className='block mb-1 font-semibold'>Rok budowy</label>
+									<select
+										className='border p-2 w-full rounded'
+										value={form.rokBudowy}
+										onChange={e => handleChange('rokBudowy', e.target.value)}>
+										<option value=''>Wybierz...</option>
+										<option>Przed 1945</option>
+										<option>1946-1980</option>
+										<option>1981-2000</option>
+										<option>2001-2015</option>
+										<option>Po 2015</option>
+									</select>
+								</div>
+
+								{/* 2. Średnia wysokość kondygnacji */}
+								<div>
+									<label className='block mb-1 font-semibold'>Średnia wysokość kondygnacji (m)</label>
+									<input
+										type='number'
+										min={0}
+										className='border p-2 w-full rounded'
+										value={form.wysokoscKondygnacji}
+										onChange={e => handleChange('wysokoscKondygnacji', e.target.value)}
+									/>
+								</div>
+
+								{/* 3. Grubość ocieplenia podłogi */}
+								<div>
+									<label className='block mb-1 font-semibold'>Grubość ocieplenia podłogi</label>
+									<select
+										className='border p-2 w-full rounded'
+										value={form.ociepleniePodlogi}
+										onChange={e => handleChange('ociepleniePodlogi', e.target.value)}>
+										<option value=''>Wybierz...</option>
+										<option>Brak</option>
+										<option>5 cm</option>
+										<option>10 cm</option>
+										<option>15 cm</option>
+										<option>20 cm</option>
+										<option>Inna</option>
+									</select>
+								</div>
+
+								{/* …analogicznie kolejne selecty dla ocieplenieDachu, ocieplenieStropodachu itd. */}
+
+								{/* 13. Wymieniono stolarkę okienną */}
+								<div>
+									<label className='block mb-1 font-semibold'>Wymieniono stolarkę okienną?</label>
+									<select
+										className='border p-2 w-full rounded'
+										value={form.wymienionoOkna}
+										onChange={e => handleChange('wymienionoOkna', e.target.value)}>
+										<option value='nie'>Nie</option>
+										<option value='tak'>Tak</option>
+									</select>
+								</div>
+
+								{form.wymienionoOkna === 'tak' && (
+									<div>
+										<label className='block mb-1 font-semibold'>Rok wymiany okien</label>
+										<input
+											type='number'
+											min={1900}
+											max={new Date().getFullYear()}
+											className='border p-2 w-full rounded'
+											value={form.rokWymianyOkien}
+											onChange={e => handleChange('rokWymianyOkien', e.target.value)}
+										/>
+									</div>
+								)}
+
+								{/* 16. Planowana termomodernizacja */}
+								<div>
+									<label className='block mb-1 font-semibold'>Planowana termomodernizacja?</label>
+									<select
+										className='border p-2 w-full rounded'
+										value={form.planowanaTermo}
+										onChange={e => handleChange('planowanaTermo', e.target.value)}>
+										<option value='nie'>Nie</option>
+										<option value='tak'>Tak</option>
+									</select>
+								</div>
+
+								{form.planowanaTermo === 'tak' && (
+									<div className='space-y-2'>
+										<label className='block font-semibold'>Zakres (można zaznaczyć wiele):</label>
+										<div className='flex flex-col space-y-1'>
+											{[
+												'ocieplenie ścian',
+												'ocieplenie dachu',
+												'ocieplenie stropu',
+												'wymiana drzwi',
+												'wymiana okien',
+												'inne',
+											].map(opcja => (
+												<label key={opcja} className='flex items-center space-x-2'>
+													<input
+														type='checkbox'
+														checked={form.planowanaTermoOpcje.includes(opcja)}
+														onChange={() => {
+															handleChange(
+																'planowanaTermoOpcje',
+																form.planowanaTermoOpcje.includes(opcja)
+																	? form.planowanaTermoOpcje.filter((o: string) => o !== opcja)
+																	: [...form.planowanaTermoOpcje, opcja]
+															)
+														}}
+													/>
+													<span>{opcja}</span>
+												</label>
+											))}
+										</div>
+
+										{form.planowanaTermoOpcje.includes('inne') && (
+											<input
+												type='text'
+												placeholder='Jakie inne?'
+												className='border p-2 w-full rounded'
+												value={form.planowanaTermoInne}
+												onChange={e => handleChange('planowanaTermoInne', e.target.value)}
+											/>
+										)}
+									</div>
+								)}
+							</div>
+						)
+					})()}
 				</Modal>
 
 				<Modal
@@ -177,28 +340,156 @@ function App() {
 
 				<Modal
 					open={activeStep === 'dane'}
-					title='Źródła ciepła'
+					title='Dane uczestnika inwentaryzacji i właściciela'
 					onClose={() => setActiveStep(null)}
-					classes='bg-white p-6 rounded-xl shadow-md'
+					classes='bg-white p-6 rounded-xl shadow-md space-y-4'
 					color='yellow'>
-					<select className='border p-2 w-full'>
-						<option>Kocioł na paliwo stałe</option>
-						<option>Kocioł gazowy</option>
-						<option>Pompa ciepła</option>
-					</select>
+					{/* 1. Imię i nazwisko uczestnika */}
+					<div>
+						<label className='block mb-1 text-sm font-medium'>
+							Imię i nazwisko osoby uczestniczącej w inwentaryzacji
+						</label>
+						<input
+							type='text'
+							value={participantName}
+							onChange={e => setParticipantName(e.target.value)}
+							className='border p-2 w-full'
+							placeholder='np. Jan Kowalski'
+						/>
+					</div>
+
+					{/* 2 i 3 + przycisk „Jak wyżej” */}
+					<div className='flex items-center justify-between'>
+						<h2 className='text-sm font-medium'>Dane właściciela / zarządcy</h2>
+						<button
+							type='button'
+							onClick={() => {
+								const trimmed = participantName.trim()
+								const lastSpaceIndex = trimmed.lastIndexOf(' ')
+
+								let first = trimmed
+								let last = ''
+
+								if (lastSpaceIndex !== -1) {
+									first = trimmed.slice(0, lastSpaceIndex) // wszystko przed ostatnią spacją
+									last = trimmed.slice(lastSpaceIndex + 1) // wszystko po ostatniej spacji
+								}
+
+								setOwnerFirstName(first)
+								setOwnerLastName(last)
+							}}
+							className='text-sm px-3 py-1 bg-gray-100 hover:bg-gray-200 rounded-md border'>
+							Jak wyżej
+						</button>
+					</div>
+
+					<div>
+						<label className='block mb-1 text-sm font-medium'>Nazwisko właściciela/zarządcy lub nazwa firmy</label>
+						<input
+							type='text'
+							value={ownerLastName}
+							onChange={e => setOwnerLastName(e.target.value)}
+							className='border p-2 w-full'
+							placeholder='np. Kowalski / Firma XYZ'
+						/>
+					</div>
+
+					<div>
+						<label className='block mb-1 text-sm font-medium'>Imię właściciela/zarządcy lub nazwa firmy</label>
+						<input
+							type='text'
+							value={ownerFirstName}
+							onChange={e => setOwnerFirstName(e.target.value)}
+							className='border p-2 w-full'
+							placeholder='np. Jan / Firma XYZ'
+						/>
+					</div>
+
+					{/* 4. E-mail */}
+					<div>
+						<label className='block mb-1 text-sm font-medium'>Adres e-mail właściciela</label>
+						<input
+							type='email'
+							value={ownerEmail}
+							onChange={e => setOwnerEmail(e.target.value)}
+							className='border p-2 w-full'
+							placeholder='np. jan@kowalski.pl'
+						/>
+					</div>
+
+					{/* 5. Uwagi */}
+					<div>
+						<label className='block mb-1 text-sm font-medium'>Inne uwagi</label>
+						<textarea
+							value={notes}
+							onChange={e => setNotes(e.target.value)}
+							className='border p-2 w-full'
+							rows={3}
+							placeholder='Dodatkowe informacje…'
+						/>
+					</div>
 				</Modal>
 
 				<Modal
 					open={activeStep === 'kominy'}
-					title='Źródła ciepła'
+					title='Przewody kominowe'
 					onClose={() => setActiveStep(null)}
 					classes='bg-white p-6 rounded-xl shadow-md'
 					color='yellow'>
-					<select className='border p-2 w-full'>
-						<option>Kocioł na paliwo stałe</option>
-						<option>Kocioł gazowy</option>
-						<option>Pompa ciepła</option>
-					</select>
+					{(() => {
+						const suma = dymowe + spalinowe + wentylacyjne + awaryjne
+
+						return (
+							<div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
+								<div className='p-4 bg-gray-100 rounded-lg shadow'>
+									<label className='block mb-2 font-semibold'>Przewody dymowe</label>
+									<input
+										type='number'
+										min={0}
+										value={dymowe}
+										onChange={e => setDymowe(Number(e.target.value))}
+										className='border p-2 w-full text-center rounded'
+									/>
+								</div>
+								<div className='p-4 bg-gray-100 rounded-lg shadow'>
+									<label className='block mb-2 font-semibold'>Przewody spalinowe</label>
+									<input
+										type='number'
+										min={0}
+										value={spalinowe}
+										onChange={e => setSpalinowe(Number(e.target.value))}
+										className='border p-2 w-full text-center rounded'
+									/>
+								</div>
+								<div className='p-4 bg-gray-100 rounded-lg shadow'>
+									<label className='block mb-2 font-semibold'>Przewody wentylacyjne</label>
+									<input
+										type='number'
+										min={0}
+										value={wentylacyjne}
+										onChange={e => setWentylacyjne(Number(e.target.value))}
+										className='border p-2 w-full text-center rounded'
+									/>
+								</div>
+								<div className='p-4 bg-gray-100 rounded-lg shadow'>
+									<label className='block mb-2 font-semibold'>Przewody awaryjne</label>
+									<input
+										type='number'
+										min={0}
+										value={awaryjne}
+										onChange={e => setAwaryjne(Number(e.target.value))}
+										className='border p-2 w-full text-center rounded'
+									/>
+								</div>
+
+								{/* Suma */}
+								<div className='col-span-1 sm:col-span-2 p-4 bg-blue-100 rounded-lg shadow text-center'>
+									<span className='block mb-1 font-semibold'>Łączna liczba przewodów</span>
+									<span className='text-3xl font-bold'>{suma}</span>
+								</div>
+							</div>
+						)
+					})()}
 				</Modal>
 
 				<Modal
