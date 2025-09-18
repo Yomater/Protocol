@@ -1,302 +1,181 @@
 {
-    "buildingFunctions": [
-        "budynki szkół i instytucji badawczych",
-        "budynki hoteli",
-        "budynki szpitali i zakładów opieki medycznej",
-        "pozostałe budynki zakwaterowania turystycznego",
-        "budynki kultury fizycznej",
-        "budynki biurowe",
-        "budynki gospodarstwa rolnego",
-        "budynki handlowo-usługowe",
-        "budynki kultu religijnego",
-        "budynki łączności dworców i terminali",
-        "budynek zabytkowy",
-        "garaże",
-        "pozostałe budynki niemieszkalne",
-        "budynki przemysłowe",
-        "budynki mieszkalne jednorodzinne",
-        "zbiorniki, silosy lub budynki magazynowe",
-        "budynki o dwóch mieszkaniach",
-        "ogólnodostępne budynki kulturalne",
-        "budynki o trzech i więcej mieszkaniach",
-        "muzea lub biblioteki",
-        "budynki zbiorowego zamieszkania",
-        "budynek mieszkalno-usługowy"
-    ],
-    "buildingType": [
-        "wolnostojący",
-        "szeregowy segment środkowy",
-        "szeregowy skrajny lub bliźniak"
-    ],
-    "buildingShape": {
-        "oneFloor": [
-            "budynek jednobryłowy, parterowy z płaskim stropodachem lub poddaszem nieużytkowym (nieogrzewanym)",
-            "budynek dwu lub wielobryłowy, parterowy z płaskim stropodachem lub poddaszem nieużytkowym (nieogrzewanym)",
-            "budynek o zwartej budowie, jednobryłowy, parterowy, z poddaszem użytkowym"
-        ],
-        "moreFloors": [
-            "budynek prostokątny, jednobryłowy bez uskoków, min. 2-kondygn. z poddaszem użytkowym",
-            "budynek prostokątny, jednobryłowy bez uskoków, min. 2-kondygn. z płaskim stropodachem lub poddaszem nieużytkowym",
-            "budynek prostokątny, jednobryłowy z uskokami, min. 2-kondygn. z poddaszem użytkowym",
-            "budynek o zwartej budowie, jednobryłowy, wielokondygn. z płaskim dachem lub poddaszem nieużytkowym",
-            "budynek prostokątny, jednobryłowy z uskokami, min. 2-kondygn. z płaskim stropodachem",
-            "budynek dwu lub wielobryłowy, parterowy z poddaszem użytkowym",
-            "budynek wielobryłowy, min. 2-kondygn. z poddaszem użytkowym",
-            "budynek dwu lub wielobryłowy, wielokondygn. z płaskim dachem lub poddaszem nieużytkowym",
-            "budynek wielobryłowy, min. 2-kondygn. z płaskim stropodachem lub poddaszem nieużytkowym"
-        ]
-    },
-    "insulationThickness": [
-        "0 cm",
-        "do 5 cm",
-        "do 10 cm",
-        "do 15 cm",
-        "powyżej 15 cm",
-        "brak danych"
-    ],
-    "basementCeiling": [
-        "tak",
-        "nie",
-        "częściowo"
-    ],
-    "heatingSystemState": [
-        "wymaga modernizacji",
-        "nie wymaga modernizacji"
-    ],
-    "wallsInsulation": [
-        "brak ocieplenia",
-        "ocieplenie częściowe",
-        "ocieplenie całościowe"
-    ],
-    "windowsType": [
-        "trzyszybowe",
-        "dwuszybowe",
-        "jednoszybowe",
-        "brak danych"
-    ],
-    "plannedThermomodernization": [
-        "ocieplenie ścian",
-        "ocieplenie dachu",
-        "ocieplenie stropu",
-        "wymiana drzwi",
-        "wymiana okien",
-        "inne"
-    ],
-    "ventilationType": [
-        "grawitacyjna/mechaniczna zwykła",
-        "z odzyskiem ciepła (rekuperacja)",
-        "brak danych"
-    ],
-    "windowReplacement": [
-        "tak – rok wymiany",
-        "nie"
-    ],
-    "doorReplacement": [
-        "tak – rok wymiany",
-        "nie"
-    ],
-    "heatingSources": {
-        "solidFuelBoiler": {
-            "character": [
-                "ogrzewanie (c.o.)",
-                "ciepła woda użytkowa (c.w.u.)",
-                "ogrzewanie + ciepła woda użytkowa"
-            ],
-            "class": [
-                "poniżej klasy 3 lub brak informacji",
-                "klasa 3",
-                "klasa 4",
-                "klasa 5"
-            ],
-            "eco": [
-                "tak",
-                "nie"
-            ],
-            "fuelFeed": [
-                "ręczny bez wentylatora",
-                "ręczny z wentylatorem",
-                "podajnik automatyczny"
-            ],
-            "buffer": [
-                "tak",
-                "nie",
-                "brak danych"
-            ],
-            "accumulator": [
-                "tak – pojemność (m3)",
-                "nie",
-                "brak danych"
-            ],
-            "fuelTypes": [
-                "węgiel orzech",
-                "węgiel kostka",
-                "węgiel groszek",
-                "węgiel miał",
-                "węgiel brunatny",
-                "pellet/brykiet drzewny",
-                "inna biomasa",
-                "drewno kawałkowe"
-            ]
-        },
-        "gasBoiler": {
-            "character": [
-                "ogrzewanie (c.o.)",
-                "ciepła woda użytkowa (c.w.u.)",
-                "ogrzewanie + ciepła woda użytkowa",
-                "miejscowy ogrzewacz pomieszczeń (m.o.p.)",
-                "funkcja technologiczna/produkcyjna"
-            ],
-            "plannedReplacement": [
-                "tak",
-                "nie"
-            ],
-            "buffer": [
-                "tak",
-                "nie",
-                "brak danych"
-            ],
-            "accumulator": [
-                "tak – pojemność (m3)",
-                "nie",
-                "brak danych"
-            ],
-            "fuel": [
-                "gaz przewodowy (sieć)",
-                "gaz butla, zbiornik LPG lub LNG"
-            ]
-        },
-        "oilBoiler": {
-            "character": [
-                "ogrzewanie (c.o.)",
-                "ciepła woda użytkowa (c.w.u.)",
-                "ogrzewanie + ciepła woda użytkowa"
-            ],
-            "plannedReplacement": [
-                "tak",
-                "nie"
-            ],
-            "buffer": [
-                "tak",
-                "nie",
-                "brak danych"
-            ],
-            "accumulator": [
-                "tak – pojemność (m3)",
-                "nie",
-                "brak danych"
-            ]
-        },
-        "electricHeating": {
-            "character": [
-                "ogrzewanie (c.o.)",
-                "ciepła woda użytkowa (c.w.u.)",
-                "ogrzewanie + ciepła woda użytkowa"
-            ],
-            "buffer": [
-                "tak",
-                "nie",
-                "brak danych"
-            ],
-            "accumulator": [
-                "tak – pojemność (m3)",
-                "nie",
-                "brak danych"
-            ]
-        },
-        "districtHeating": {
-            "character": [
-                "ogrzewanie (c.o.)",
-                "ciepła woda użytkowa (c.w.u.)",
-                "ogrzewanie + ciepła woda użytkowa"
-            ]
-        },
-        "heatPump": {
-            "character": [
-                "ogrzewanie (c.o.)",
-                "ciepła woda użytkowa (c.w.u.)",
-                "ogrzewanie + ciepła woda użytkowa"
-            ],
-            "type": [
-                "gruntowa",
-                "wodna",
-                "powietrzna"
-            ],
-            "buffer": [
-                "tak",
-                "nie",
-                "brak danych"
-            ],
-            "accumulator": [
-                "tak – pojemność (m3)",
-                "nie",
-                "brak danych"
-            ]
-        },
-        "solarCollectors": {
-            "character": [
-                "ogrzewanie (c.o.)",
-                "ciepła woda użytkowa (c.w.u.)",
-                "ogrzewanie + ciepła woda użytkowa"
-            ],
-            "buffer": [
-                "tak",
-                "nie",
-                "brak danych"
-            ],
-            "accumulator": [
-                "tak – pojemność (m3)",
-                "nie",
-                "brak danych"
-            ]
-        },
-        "photovoltaics": {
-            "fields": [
-                "nominalna moc",
-                "liczba paneli",
-                "rok montażu",
-                "rok produkcji"
-            ]
-        },
-        "fireplace": {
-            "character": [
-                "ogrzewanie (c.o.)",
-                "ciepła woda użytkowa (c.w.u.)",
-                "ogrzewanie + ciepła woda użytkowa",
-                "miejscowy ogrzewacz pomieszczeń (m.o.p.)"
-            ],
-            "plannedReplacement": [
-                "tak",
-                "nie"
-            ],
-            "dustDevice": [
-                "tak – sprawność (%)",
-                "nie"
-            ],
-            "buffer": [
-                "tak",
-                "nie",
-                "brak danych"
-            ],
-            "accumulator": [
-                "tak – pojemność (m3)",
-                "nie",
-                "brak danych"
-            ],
-            "standards": [
-                "ekoprojekt",
-                "nie",
-                "inne standardy niskoemisyjne"
-            ],
-            "fuelTypes": [
-                "węgiel orzech",
-                "węgiel kostka",
-                "węgiel groszek",
-                "węgiel miał",
-                "węgiel brunatny",
-                "pellet/brykiet drzewny",
-                "inna biomasa",
-                "drewno kawałkowe"
-            ]
-        }
-    }
+	"buildingFunctions": [
+		"budynki szkół i instytucji badawczych",
+		"budynki hoteli",
+		"budynki szpitali i zakładów opieki medycznej",
+		"pozostałe budynki zakwaterowania turystycznego",
+		"budynki kultury fizycznej",
+		"budynki biurowe",
+		"budynki gospodarstwa rolnego",
+		"budynki handlowo-usługowe",
+		"budynki kultu religijnego",
+		"budynki łączności dworców i terminali",
+		"budynek zabytkowy",
+		"garaże",
+		"pozostałe budynki niemieszkalne",
+		"budynki przemysłowe",
+		"budynki mieszkalne jednorodzinne",
+		"zbiorniki, silosy lub budynki magazynowe",
+		"budynki o dwóch mieszkaniach",
+		"ogólnodostępne budynki kulturalne",
+		"budynki o trzech i więcej mieszkaniach",
+		"muzea lub biblioteki",
+		"budynki zbiorowego zamieszkania",
+		"budynek mieszkalno-usługowy"
+	],
+	"buildingYear": [
+		"przed 1945",
+		"1946-1950",
+		"1951-1960",
+		"1961-1970",
+		"1971-1980",
+		"1981-1990",
+		"1991-2000",
+		"2001-2008",
+		"2009",
+		"2010",
+		"2011",
+		"2012",
+		"2013",
+		"2014",
+		"2015",
+		"2016",
+		"2017",
+		"2018",
+		"2019",
+		"2020",
+		"2021",
+		"2022",
+		"2023",
+		"2024"
+	],
+	"buildingType": ["wolnostojący", "szeregowy segment środkowy", "szeregowy skrajny lub bliźniak"],
+	"buildingShape": {
+		"oneFloor": [
+			"budynek jednobryłowy, parterowy z płaskim stropodachem lub poddaszem nieużytkowym (nieogrzewanym)",
+			"budynek dwu lub wielobryłowy, parterowy z płaskim stropodachem lub poddaszem nieużytkowym (nieogrzewanym)",
+			"budynek o zwartej budowie, jednobryłowy, parterowy, z poddaszem użytkowym"
+		],
+		"twoFloors": [
+			"budynek prostokątny, jednobryłowy bez uskoków, min. 2-kondygn. z poddaszem użytkowym",
+			"budynek prostokątny, jednobryłowy bez uskoków, min. 2-kondygn. z płaskim stropodachem lub poddaszem nieużytkowym",
+			"budynek prostokątny, jednobryłowy z uskokami, min. 2-kondygn. z poddaszem użytkowym",
+			"budynek o zwartej budowie, jednobryłowy, wielokondygn. z płaskim dachem lub poddaszem nieużytkowym",
+			"budynek prostokątny, jednobryłowy z uskokami, min. 2-kondygn. z płaskim stropodachem",
+			"budynek dwu lub wielobryłowy, parterowy z poddaszem użytkowym",
+			"budynek wielobryłowy, min. 2-kondygn. z poddaszem użytkowym",
+			"budynek dwu lub wielobryłowy, wielokondygn. z płaskim dachem lub poddaszem nieużytkowym",
+			"budynek wielobryłowy, min. 2-kondygn. z płaskim stropodachem lub poddaszem nieużytkowym"
+		],
+		"threeFloors": [
+			"budynek prostokątny, jednobryłowy bez uskoków, min. 2-kondygn. z poddaszem użytkowym",
+			"budynek prostokątny, jednobryłowy bez uskoków, min. 2-kondygn. z płaskim stropodachem lub poddaszem nieużytkowym",
+			"budynek prostokątny, jednobryłowy z uskokami, min. 2-kondygn. z poddaszem użytkowym",
+			"budynek o zwartej budowie, jednobryłowy, wielokondygn. z płaskim dachem lub poddaszem nieużytkowym",
+			"budynek prostokątny, jednobryłowy z uskokami, min. 2-kondygn. z płaskim stropodachem",
+			"budynek wielobryłowy, min. 2-kondygn. z poddaszem użytkowym",
+			"budynek dwu lub wielobryłowy, wielokondygn. z płaskim dachem lub poddaszem nieużytkowym",
+			"budynek wielobryłowy, min. 2-kondygn. z płaskim stropodachem lub poddaszem nieużytkowym"
+		]
+	},
+	"insulationThickness": ["0 cm", "do 5 cm", "do 10 cm", "do 15 cm", "powyżej 15 cm", "brak danych"],
+	"basementCeiling": ["tak", "nie", "częściowo"],
+	"heatingSystemState": ["wymaga modernizacji", "nie wymaga modernizacji"],
+	"wallsInsulation": ["brak ocieplenia", "ocieplenie częściowe", "ocieplenie całościowe"],
+	"windowsType": ["trzyszybowe", "dwuszybowe", "jednoszybowe", "brak danych"],
+	"plannedThermomodernization": [
+		"ocieplenie ścian",
+		"ocieplenie dachu",
+		"ocieplenie stropu",
+		"wymiana drzwi",
+		"wymiana okien",
+		"inne"
+	],
+	"ventilationType": ["grawitacyjna/mechaniczna zwykła", "z odzyskiem ciepła (rekuperacja)", "brak danych"],
+	"windowReplacement": ["tak – rok wymiany", "nie"],
+	"doorReplacement": ["tak – rok wymiany", "nie"],
+	"heatingSources": {
+		"solidFuelBoiler": {
+			"character": ["ogrzewanie (c.o.)", "ciepła woda użytkowa (c.w.u.)", "ogrzewanie + ciepła woda użytkowa"],
+			"class": ["poniżej klasy 3 lub brak informacji", "klasa 3", "klasa 4", "klasa 5"],
+			"eco": ["tak", "nie"],
+			"fuelFeed": ["ręczny bez wentylatora", "ręczny z wentylatorem", "podajnik automatyczny"],
+			"buffer": ["tak", "nie", "brak danych"],
+			"accumulator": ["tak – pojemność (m3)", "nie", "brak danych"],
+			"fuelTypes": [
+				"węgiel orzech",
+				"węgiel kostka",
+				"węgiel groszek",
+				"węgiel miał",
+				"węgiel brunatny",
+				"pellet/brykiet drzewny",
+				"inna biomasa",
+				"drewno kawałkowe"
+			]
+		},
+		"gasBoiler": {
+			"character": [
+				"ogrzewanie (c.o.)",
+				"ciepła woda użytkowa (c.w.u.)",
+				"ogrzewanie + ciepła woda użytkowa",
+				"miejscowy ogrzewacz pomieszczeń (m.o.p.)",
+				"funkcja technologiczna/produkcyjna"
+			],
+			"plannedReplacement": ["tak", "nie"],
+			"buffer": ["tak", "nie", "brak danych"],
+			"accumulator": ["tak – pojemność (m3)", "nie", "brak danych"],
+			"fuel": ["gaz przewodowy (sieć)", "gaz butla, zbiornik LPG lub LNG"]
+		},
+		"oilBoiler": {
+			"character": ["ogrzewanie (c.o.)", "ciepła woda użytkowa (c.w.u.)", "ogrzewanie + ciepła woda użytkowa"],
+			"plannedReplacement": ["tak", "nie"],
+			"buffer": ["tak", "nie", "brak danych"],
+			"accumulator": ["tak – pojemność (m3)", "nie", "brak danych"]
+		},
+		"electricHeating": {
+			"character": ["ogrzewanie (c.o.)", "ciepła woda użytkowa (c.w.u.)", "ogrzewanie + ciepła woda użytkowa"],
+			"buffer": ["tak", "nie", "brak danych"],
+			"accumulator": ["tak – pojemność (m3)", "nie", "brak danych"]
+		},
+		"districtHeating": {
+			"character": ["ogrzewanie (c.o.)", "ciepła woda użytkowa (c.w.u.)", "ogrzewanie + ciepła woda użytkowa"]
+		},
+		"heatPump": {
+			"character": ["ogrzewanie (c.o.)", "ciepła woda użytkowa (c.w.u.)", "ogrzewanie + ciepła woda użytkowa"],
+			"type": ["gruntowa", "wodna", "powietrzna"],
+			"buffer": ["tak", "nie", "brak danych"],
+			"accumulator": ["tak – pojemność (m3)", "nie", "brak danych"]
+		},
+		"solarCollectors": {
+			"character": ["ogrzewanie (c.o.)", "ciepła woda użytkowa (c.w.u.)", "ogrzewanie + ciepła woda użytkowa"],
+			"buffer": ["tak", "nie", "brak danych"],
+			"accumulator": ["tak – pojemność (m3)", "nie", "brak danych"]
+		},
+		"photovoltaics": {
+			"fields": ["nominalna moc", "liczba paneli", "rok montażu", "rok produkcji"]
+		},
+		"fireplace": {
+			"character": [
+				"ogrzewanie (c.o.)",
+				"ciepła woda użytkowa (c.w.u.)",
+				"ogrzewanie + ciepła woda użytkowa",
+				"miejscowy ogrzewacz pomieszczeń (m.o.p.)"
+			],
+			"plannedReplacement": ["tak", "nie"],
+			"dustDevice": ["tak – sprawność (%)", "nie"],
+			"buffer": ["tak", "nie", "brak danych"],
+			"accumulator": ["tak – pojemność (m3)", "nie", "brak danych"],
+			"standards": ["ekoprojekt", "nie", "inne standardy niskoemisyjne"],
+			"fuelTypes": [
+				"węgiel orzech",
+				"węgiel kostka",
+				"węgiel groszek",
+				"węgiel miał",
+				"węgiel brunatny",
+				"pellet/brykiet drzewny",
+				"inna biomasa",
+				"drewno kawałkowe"
+			]
+		}
+	}
 }

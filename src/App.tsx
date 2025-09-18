@@ -2,6 +2,11 @@ import { useState } from 'react'
 import Section from './Components/Section'
 import StepButton from './Components/StepButton'
 import Modal from './Components/Modal'
+import FormField from './Components/FormField'
+import DynamicFormField from './Components/DynamicFormField'
+import ConditionalNumberField from './Components/ConditionalNumberField'
+import ConditionalMultiSelectField from './Components/ConditionalMultiSelectField'
+import data from './data.json'
 
 type Step = 'adres' | 'termo' | 'zrodla' | 'dane' | 'kominy' | 'wysylka' | null
 
@@ -30,7 +35,7 @@ function App() {
 				{(activeStep === null || activeStep === 'adres') && (
 					<Section classes='grid grid-cols-1 gap-4'>
 						<StepButton
-							label='Adres i funkcja'
+							label='Adres i funkcja lokalu'
 							onClick={() => setActiveStep('adres')}
 							active={activeStep === 'adres'}
 							color='blue'
@@ -96,7 +101,7 @@ function App() {
 
 				<Modal
 					open={activeStep === 'adres'}
-					title='Adres i funkcja'
+					title='Adres i funkcja lokalu'
 					onClose={() => setActiveStep(null)}
 					classes='bg-white p-6 rounded-xl shadow-md'
 					color='blue'>
@@ -167,6 +172,11 @@ function App() {
 					color='yellow'>
 					{(() => {
 						const [form, setForm] = useState({
+							funkcjaBudynku: '',
+							typBudynku: '',
+							kondygnacje: 1,
+							ksztaltBudynku: '',
+							obwodBudynku: '',
 							rokBudowy: '',
 							wysokoscKondygnacji: '',
 							ociepleniePodlogi: '',
@@ -180,10 +190,10 @@ function App() {
 							stanCWU: '',
 							wentylacja: '',
 							wymienionoOkna: 'nie',
-							rokWymianyOkien: '',
+							rokWymianyOkien: 0,
 							rodzajOkien: '',
 							wymienionoDrzwi: 'nie',
-							rokWymianyDrzwi: '',
+							rokWymianyDrzwi: 0,
 							planowanaTermo: 'nie',
 							planowanaTermoOpcje: [],
 							planowanaTermoInne: '',
@@ -192,134 +202,185 @@ function App() {
 						const handleChange = (field: string, value: any) => setForm(prev => ({ ...prev, [field]: value }))
 
 						return (
-							<div className='space-y-4'>
-								{/* w razie podziału na dwie kolumny można użyć klas grid grid-cols-1 md:grid-cols-2 gap-4 */}
-								{/* 1. Rok budowy */}
-								<div>
-									<label className='block mb-1 font-semibold'>Rok budowy</label>
-									<select
-										className='border p-2 w-full rounded'
-										value={form.rokBudowy}
-										onChange={e => handleChange('rokBudowy', e.target.value)}>
-										<option value=''>Wybierz...</option>
-										<option>Przed 1945</option>
-										<option>1946-1980</option>
-										<option>1981-2000</option>
-										<option>2001-2015</option>
-										<option>Po 2015</option>
-									</select>
-								</div>
+							<div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+								{/* w razie podziału na dwie kolumny można użyć klas grid grid-cols-1 md:grid-cols-2 gap-4, bez podziału space-y-4 */}
+								{/* 1. Funkcja Budynku */}
+								<FormField
+									label='Funkcja budynku'
+									optionsKey='buildingFunctions'
+									type='select'
+									value={form.funkcjaBudynku}
+									onChange={val => handleChange('funkcjaBudynku', val)}
+								/>
+								{/* 2. Typ budynku */}
+								<FormField
+									label='Typ budynku'
+									optionsKey='buildingType'
+									type='select'
+									value={form.typBudynku}
+									onChange={val => handleChange('typBudynku', val)}
+								/>
+								{/* 3. Liczba kondygnacji i kształt budynku */}
+								<DynamicFormField
+									label='Liczba kondygnacji i kształt budynku'
+									numberLabel='Podaj liczbę kondygnacji'
+									selectLabel='Wybierz kształt budynku'
+									value={form.kondygnacje}
+									onNumberChange={val => handleChange('kondygnacje', val)}
+									selectValue={form.ksztaltBudynku}
+									onSelectChange={val => handleChange('ksztaltBudynku', val)}
+									optionsMap={{
+										'1': data.buildingShape.oneFloor,
+										'2': data.buildingShape.twoFloors,
+										default: data.buildingShape.threeFloors,
+									}}
+								/>
+								<FormField
+									label='Obwód budynku (m)'
+									type='number'
+									value={form.obwodBudynku}
+									onChange={val => handleChange('obwodBudynku', val)}
+								/>
+								{/* 4. Rok budowy */}
+								<FormField
+									label='Rok budowy'
+									optionsKey='buildingYear'
+									type='select'
+									value={form.rokBudowy}
+									onChange={val => handleChange('rokBudowy', val)}
+								/>
 
-								{/* 2. Średnia wysokość kondygnacji */}
-								<div>
-									<label className='block mb-1 font-semibold'>Średnia wysokość kondygnacji (m)</label>
-									<input
-										type='number'
-										min={0}
-										className='border p-2 w-full rounded'
-										value={form.wysokoscKondygnacji}
-										onChange={e => handleChange('wysokoscKondygnacji', e.target.value)}
-									/>
-								</div>
+								{/* 5. Średnia wysokość kondygnacji */}
+								<FormField
+									label='Średnia wysokość kondygnacji (m)'
+									type='number'
+									value={form.wysokoscKondygnacji}
+									onChange={val => handleChange('wysokoscKondygnacji', val)}
+								/>
 
-								{/* 3. Grubość ocieplenia podłogi */}
-								<div>
-									<label className='block mb-1 font-semibold'>Grubość ocieplenia podłogi</label>
-									<select
-										className='border p-2 w-full rounded'
-										value={form.ociepleniePodlogi}
-										onChange={e => handleChange('ociepleniePodlogi', e.target.value)}>
-										<option value=''>Wybierz...</option>
-										<option>Brak</option>
-										<option>5 cm</option>
-										<option>10 cm</option>
-										<option>15 cm</option>
-										<option>20 cm</option>
-										<option>Inna</option>
-									</select>
-								</div>
+								{/* 6. Grubość ocieplenia podłogi */}
+								<FormField
+									label='Grubość ocieplenia podłogi na gruncie lub stropu nad piwnicą/garażem'
+									optionsKey='insulationThickness'
+									type='select'
+									value={form.ociepleniePodlogi}
+									onChange={val => handleChange('ociepleniePodlogi', val)}
+								/>
 
+								{/* 7. Grubość ocieplenia Dachu */}
+								<FormField
+									label='Grubość ocieplenia dachu'
+									optionsKey='insulationThickness'
+									type='select'
+									value={form.ocieplenieDachu}
+									onChange={val => handleChange('ocieplenieDachu', val)}
+								/>
+								{/* 8. Grubość ocieplenia Stropodachu */}
+								<FormField
+									label='Grubość ocieplenia stropodachu'
+									optionsKey='insulationThickness'
+									type='select'
+									value={form.ocieplenieStropodachu}
+									onChange={val => handleChange('ocieplenieStropodachu', val)}
+								/>
+								{/* 9. Strop nad piwnicą */}
+								<FormField
+									label='Strop nad piwnicą'
+									optionsKey='basementCeiling'
+									type='select'
+									value={form.stropNadPiwnica}
+									onChange={val => handleChange('stropNadPiwnica', val)}
+								/>
+								{/* 10. Stan instalacji CO */}
+								<FormField
+									label='Stan instalacji Centralnego Ogrzewania (CO)'
+									optionsKey='heatingSystemState'
+									type='select'
+									value={form.stanCO}
+									onChange={val => handleChange('stanCO', val)}
+								/>
+								{/* 11. Stopień ocieplenia ścian */}
+								<FormField
+									label='Stopień ocieplenia ścian'
+									optionsKey='wallsInsulation'
+									type='select'
+									value={form.stopienOciepleniaScian}
+									onChange={val => handleChange('stopienOciepleniaScian', val)}
+								/>
+								{/* 12. Grubość ocieplenia ścian */}
+								<FormField
+									label='Grubość ocieplenia ścian'
+									optionsKey='insulationThickness'
+									type='select'
+									value={form.gruboscOciepleniaScian}
+									onChange={val => handleChange('gruboscOciepleniaScian', val)}
+								/>
+								{/* 13. Ocieplenie stropów */}
+								<FormField
+									label='Ocieplenie stropów'
+									optionsKey='heatingSystemState'
+									type='select'
+									value={form.ocieplenieStropow}
+									onChange={val => handleChange('ocieplenieStropow', val)}
+								/>
+								{/* 14. Stan instalacji CWU */}
+								<FormField
+									label='Stan instalacji Ciepłej Wody Użytkowej (CWU)'
+									optionsKey='heatingSystemState'
+									type='select'
+									value={form.stanCWU}
+									onChange={val => handleChange('stanCWU', val)}
+								/>
+								{/* 15. Rodzaj wentylacji */}
+								<FormField
+									label='Rodzaj wentylacji:'
+									optionsKey='ventilationType'
+									type='select'
+									value={form.wentylacja}
+									onChange={val => handleChange('wentylacja', val)}
+								/>
 								{/* …analogicznie kolejne selecty dla ocieplenieDachu, ocieplenieStropodachu itd. */}
 
-								{/* 13. Wymieniono stolarkę okienną */}
-								<div>
-									<label className='block mb-1 font-semibold'>Wymieniono stolarkę okienną?</label>
-									<select
-										className='border p-2 w-full rounded'
-										value={form.wymienionoOkna}
-										onChange={e => handleChange('wymienionoOkna', e.target.value)}>
-										<option value='nie'>Nie</option>
-										<option value='tak'>Tak</option>
-									</select>
-								</div>
+								{/* 16. Wymieniono stolarkę okienną */}
+								<ConditionalNumberField
+									label='Czy wymieniono stolarkę okienną?'
+									value={form.wymienionoOkna}
+									onValueChange={val => handleChange('wymienionoOkna', val)}
+									numberLabel='Rok wymiany'
+									numberValue={form.rokWymianyOkien}
+									onNumberChange={val => handleChange('rokWymianyOkien', val)}
+								/>
 
-								{form.wymienionoOkna === 'tak' && (
-									<div>
-										<label className='block mb-1 font-semibold'>Rok wymiany okien</label>
-										<input
-											type='number'
-											min={1900}
-											max={new Date().getFullYear()}
-											className='border p-2 w-full rounded'
-											value={form.rokWymianyOkien}
-											onChange={e => handleChange('rokWymianyOkien', e.target.value)}
-										/>
-									</div>
-								)}
+								{/* 17. Rodzaj okien */}
+								<FormField
+									label='Rodzaj okien:'
+									optionsKey='windowsType'
+									type='select'
+									value={form.rodzajOkien}
+									onChange={val => handleChange('rodzajOkien', val)}
+								/>
+
+								{/* 18. Wymieniono stolarkę drzwiową */}
+								<ConditionalNumberField
+									label='Czy wymieniono drzwi zewnętrzne?'
+									value={form.wymienionoDrzwi}
+									onValueChange={val => handleChange('wymienionoDrzwi', val)}
+									numberLabel='Rok wymiany'
+									numberValue={form.rokWymianyDrzwi}
+									onNumberChange={val => handleChange('rokWymianyDrzwi', val)}
+								/>
 
 								{/* 16. Planowana termomodernizacja */}
-								<div>
-									<label className='block mb-1 font-semibold'>Planowana termomodernizacja?</label>
-									<select
-										className='border p-2 w-full rounded'
-										value={form.planowanaTermo}
-										onChange={e => handleChange('planowanaTermo', e.target.value)}>
-										<option value='nie'>Nie</option>
-										<option value='tak'>Tak</option>
-									</select>
-								</div>
-
-								{form.planowanaTermo === 'tak' && (
-									<div className='space-y-2'>
-										<label className='block font-semibold'>Zakres (można zaznaczyć wiele):</label>
-										<div className='flex flex-col space-y-1'>
-											{[
-												'ocieplenie ścian',
-												'ocieplenie dachu',
-												'ocieplenie stropu',
-												'wymiana drzwi',
-												'wymiana okien',
-												'inne',
-											].map(opcja => (
-												<label key={opcja} className='flex items-center space-x-2'>
-													<input
-														type='checkbox'
-														checked={form.planowanaTermoOpcje.includes(opcja)}
-														onChange={() => {
-															handleChange(
-																'planowanaTermoOpcje',
-																form.planowanaTermoOpcje.includes(opcja)
-																	? form.planowanaTermoOpcje.filter((o: string) => o !== opcja)
-																	: [...form.planowanaTermoOpcje, opcja]
-															)
-														}}
-													/>
-													<span>{opcja}</span>
-												</label>
-											))}
-										</div>
-
-										{form.planowanaTermoOpcje.includes('inne') && (
-											<input
-												type='text'
-												placeholder='Jakie inne?'
-												className='border p-2 w-full rounded'
-												value={form.planowanaTermoInne}
-												onChange={e => handleChange('planowanaTermoInne', e.target.value)}
-											/>
-										)}
-									</div>
-								)}
+								<ConditionalMultiSelectField
+									label='Planowana termomodernizacja?'
+									value={form.planowanaTermo}
+									onValueChange={val => handleChange('planowanaTermo', val)}
+									options={data.plannedThermomodernization} // tablica z JSON-a
+									selectedOptions={form.planowanaTermoOpcje}
+									onOptionsChange={val => handleChange('planowanaTermoOpcje', val)}
+									otherValue={form.planowanaTermoInne}
+									onOtherChange={val => handleChange('planowanaTermoInne', val)}
+								/>
 							</div>
 						)
 					})()}
