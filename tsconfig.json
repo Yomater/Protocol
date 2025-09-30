@@ -3,5 +3,10 @@
   "references": [
     { "path": "./tsconfig.app.json" },
     { "path": "./tsconfig.node.json" }
-  ]
+  ],
+  "compilerOptions": {
+    "jsx": "react-jsx",         // albo "react" jeśli masz starszy projekt
+    "lib": ["dom", "esnext"],   // to daje definicje JSX z DOM
+    // ...
+  }
 }

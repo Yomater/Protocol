@@ -6,6 +6,7 @@ import FormField from './Components/FormField'
 import DynamicFormField from './Components/DynamicFormField'
 import ConditionalNumberField from './Components/ConditionalNumberField'
 import ConditionalMultiSelectField from './Components/ConditionalMultiSelectField'
+import ModalSources from './Components/ModalSources'
 import data from './data.json'
 
 type Step = 'adres' | 'termo' | 'zrodla' | 'dane' | 'kominy' | 'wysylka' | null
@@ -386,18 +387,7 @@ function App() {
 					})()}
 				</Modal>
 
-				<Modal
-					open={activeStep === 'zrodla'}
-					title='Źródła ciepła'
-					onClose={() => setActiveStep(null)}
-					classes='bg-white p-6 rounded-xl shadow-md'
-					color='yellow'>
-					<select className='border p-2 w-full'>
-						<option>Kocioł na paliwo stałe</option>
-						<option>Kocioł gazowy</option>
-						<option>Pompa ciepła</option>
-					</select>
-				</Modal>
+				<ModalSources open={activeStep === 'zrodla'} onClose={() => setActiveStep(null)} />
 
 				<Modal
 					open={activeStep === 'dane'}

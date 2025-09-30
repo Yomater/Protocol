@@ -94,6 +94,50 @@
 	"ventilationType": ["grawitacyjna/mechaniczna zwykła", "z odzyskiem ciepła (rekuperacja)", "brak danych"],
 	"windowReplacement": ["tak – rok wymiany", "nie"],
 	"doorReplacement": ["tak – rok wymiany", "nie"],
+	"fuelTypes": {
+		"solidFuelBoiler": [
+			"węgiel orzech",
+			"węgiel kostka",
+			"węgiel groszek",
+			"węgiel miał",
+			"węgiel brunatny",
+			"pellet/brykiet drzewny",
+			"inna biomasa",
+			"drewno kawałkowe"
+		],
+		"gasBoiler": ["gaz przewodowy (sieć)", "gaz butla, zbiornik LPG lub LNG"],
+		"oilBoiler": ["olej opałowy"],
+		"fireplace": [
+			"węgiel orzech",
+			"węgiel kostka",
+			"węgiel groszek",
+			"węgiel miał",
+			"węgiel brunatny",
+			"pellet/brykiet drzewny",
+			"inna biomasa",
+			"drewno kawałkowe"
+		],
+		"kitchenCore": [
+			"węgiel orzech",
+			"węgiel kostka",
+			"węgiel groszek",
+			"węgiel miał",
+			"węgiel brunatny",
+			"pellet/brykiet drzewny",
+			"inna biomasa",
+			"drewno kawałkowe"
+		],
+		"tiledStove": [
+			"węgiel orzech",
+			"węgiel kostka",
+			"węgiel groszek",
+			"węgiel miał",
+			"węgiel brunatny",
+			"pellet/brykiet drzewny",
+			"inna biomasa",
+			"drewno kawałkowe"
+		]
+	},
 	"heatingSources": {
 		"solidFuelBoiler": {
 			"character": ["ogrzewanie (c.o.)", "ciepła woda użytkowa (c.w.u.)", "ogrzewanie + ciepła woda użytkowa"],
@@ -101,17 +145,7 @@
 			"eco": ["tak", "nie"],
 			"fuelFeed": ["ręczny bez wentylatora", "ręczny z wentylatorem", "podajnik automatyczny"],
 			"buffer": ["tak", "nie", "brak danych"],
-			"accumulator": ["tak – pojemność (m3)", "nie", "brak danych"],
-			"fuelTypes": [
-				"węgiel orzech",
-				"węgiel kostka",
-				"węgiel groszek",
-				"węgiel miał",
-				"węgiel brunatny",
-				"pellet/brykiet drzewny",
-				"inna biomasa",
-				"drewno kawałkowe"
-			]
+			"accumulator": ["tak – pojemność (m3)", "nie", "brak danych"]
 		},
 		"gasBoiler": {
 			"character": [
@@ -123,8 +157,7 @@
 			],
 			"plannedReplacement": ["tak", "nie"],
 			"buffer": ["tak", "nie", "brak danych"],
-			"accumulator": ["tak – pojemność (m3)", "nie", "brak danych"],
-			"fuel": ["gaz przewodowy (sieć)", "gaz butla, zbiornik LPG lub LNG"]
+			"accumulator": ["tak – pojemność (m3)", "nie", "brak danych"]
 		},
 		"oilBoiler": {
 			"character": ["ogrzewanie (c.o.)", "ciepła woda użytkowa (c.w.u.)", "ogrzewanie + ciepła woda użytkowa"],
@@ -177,5 +210,24 @@
 				"drewno kawałkowe"
 			]
 		}
-	}
+	},
+	"heatCharacter": ["ogrzewanie (c.o.)", "ciepła woda użytkowa (c.w.u.)", "ogrzewanie + ciepła woda użytkowa"],
+	"heatCharacterFireplace": [
+		"ogrzewanie (c.o.)",
+		"ciepła woda użytkowa (c.w.u.)",
+		"ogrzewanie + ciepła woda użytkowa",
+		"miejscowy ogrzewacz pomieszczeń (m.o.p.)"
+	],
+	"heatCharacterGas": [
+		"ogrzewanie (c.o.)",
+		"ciepła woda użytkowa (c.w.u.)",
+		"ogrzewanie + ciepła woda użytkowa",
+		"miejscowy ogrzewacz pomieszczeń (m.o.p.)",
+		"funkcja technologiczna/produkcyjna"
+	],
+	"class": ["poniżej klasy 3 lub brak informacji", "klasa 3", "klasa 4", "klasa 5"],
+	"yesNo": ["tak", "nie"],
+	"yesNoUnknown": ["tak", "nie", "brak danych"],
+	"fuelFeed": ["ręczny bez wentylatora", "ręczny z wentylatorem", "podajnik automatyczny"],
+	"pumpType": ["gruntowa", "wodna", "powietrzna"]
 }
