@@ -20,7 +20,7 @@ const ModalSources: React.FC<ModalSourcesProps> = ({ open, onClose }) => {
 			...prev,
 			{
 				type: '',
-				fuels: [],
+				fuelInputs: {},
 				power: '',
 				installYear: '',
 				productionYear: '',
@@ -39,7 +39,7 @@ const ModalSources: React.FC<ModalSourcesProps> = ({ open, onClose }) => {
 				dataSourceOther: '',
 				pumpType: '',
 				collectorsNumber: '',
-				photovoltaicsNumber: '',
+				photovoltaicsNumber: ''
 			},
 		])
 

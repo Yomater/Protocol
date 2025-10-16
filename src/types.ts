@@ -9,12 +9,13 @@ export type HeatSourceType =
 	| 'solarCollectors'
 	| 'photovoltaics'
 	| 'fireplace'
+	| 'stoveKitchen'
 	| 'kitchenCore'
 	| 'tiledStove'
 
 export interface HeatSourceData {
 	type: HeatSourceType
-	fuels: string[]
+	fuelInputs: Record<string, number | ''>
 	power: number | '' // trzymamy number | '' (można też string)
 	installYear: number | '' // trzymamy number | '' (można też string)
 	productionYear: number | '' // trzymamy number | '' (można też string)
