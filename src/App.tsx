@@ -2,31 +2,67 @@ import { useState } from 'react'
 import Section from './Components/Section'
 import StepButton from './Components/StepButton'
 import Modal from './Components/Modal'
-import FormField from './Components/FormField'
-import DynamicFormField from './Components/DynamicFormField'
-import ConditionalNumberField from './Components/ConditionalNumberField'
-import ConditionalMultiSelectField from './Components/ConditionalMultiSelectField'
 import ModalSources from './Components/ModalSources'
-import data from './data.json'
+import ModalTermo from './Components/ModalTermo'
+import type { FormData } from './types'
+import { generatePDF } from './utils/generatePDF'
 
 type Step = 'adres' | 'termo' | 'zrodla' | 'dane' | 'kominy' | 'wysylka' | null
 
 function App() {
 	const [activeStep, setActiveStep] = useState<Step>(null)
-	const [avgTemp, setAvgTemp] = useState<number | ''>('')
-	const [localType, setLocalType] = useState<'mieszkalny' | 'niemieszkalny' | 'inny'>('mieszkalny')
-	const [otherType, setOtherType] = useState('')
-	const [area, setArea] = useState<number | ''>('')
-	const [participantName, setParticipantName] = useState('')
-	const [ownerLastName, setOwnerLastName] = useState('')
-	const [ownerFirstName, setOwnerFirstName] = useState('')
-	const [ownerEmail, setOwnerEmail] = useState('')
-	const [notes, setNotes] = useState('')
 
-	const [dymowe, setDymowe] = useState(0)
-	const [spalinowe, setSpalinowe] = useState(0)
-	const [wentylacyjne, setWentylacyjne] = useState(0)
-	const [awaryjne, setAwaryjne] = useState(0)
+	const [formData, setFormData] = useState<FormData>({
+		avgTemp: '',
+		localType: 'mieszkalny',
+		otherType: '',
+		area: '',
+		addressCity: '',
+		addressStreet: '',
+
+		participantName: '',
+		ownerLastName: '',
+		ownerFirstName: '',
+		ownerEmail: '',
+		notes: '',
+
+		chimney: {
+			dymowe: 0,
+			spalinowe: 0,
+			wentylacyjne: 0,
+			awaryjne: 0,
+		},
+
+		building: {
+			funkcjaBudynku: '',
+			typBudynku: '',
+			kondygnacje: 1,
+			ksztaltBudynku: '',
+			obwodBudynku: '',
+			rokBudowy: '',
+			wysokoscKondygnacji: '',
+			ociepleniePodlogi: '',
+			ocieplenieDachu: '',
+			ocieplenieStropodachu: '',
+			stropNadPiwnica: '',
+			stanCO: '',
+			stopienOciepleniaScian: '',
+			gruboscOciepleniaScian: '',
+			ocieplenieStropow: '',
+			stanCWU: '',
+			wentylacja: '',
+			wymienionoOkna: 'nie',
+			rokWymianyOkien: 0,
+			rodzajOkien: '',
+			wymienionoDrzwi: 'nie',
+			rokWymianyDrzwi: 0,
+			planowanaTermo: 'nie',
+			planowanaTermoOpcje: [],
+			planowanaTermoInne: '',
+		},
+
+		sources: [],
+	})
 
 	return (
 		<div className='w-full px-4 py-6 bg-gray-50'>
@@ -106,16 +142,43 @@ function App() {
 					onClose={() => setActiveStep(null)}
 					classes='bg-white p-6 rounded-xl shadow-md'
 					color='blue'>
-					<input type='text' placeholder='Miejscowość' className='border p-2 w-full mb-2 text-center' />
-					<input type='text' placeholder='Ulica' className='border p-2 w-full text-center' />
+					<input
+						type='text'
+						placeholder='Miejscowość'
+						className='border p-2 w-full mb-2 text-center'
+						value={formData.addressCity}
+						onChange={e =>
+							setFormData(prev => ({
+								...prev,
+								addressCity: e.target.value as any,
+							}))
+						}
+					/>
+					<input
+						type='text'
+						placeholder='Ulica'
+						className='border p-2 w-full text-center'
+						value={formData.addressStreet}
+						onChange={e =>
+							setFormData(prev => ({
+								...prev,
+								addressStreet: e.target.value as any,
+							}))
+						}
+					/>
 					{/* 1. Średnia temp. */}
 					<div className='flex items-center p-4 gap-2'>
 						<label className='w-1/2 text-sm font-medium'>Średnia temp.</label>
 						<input
 							type='number'
 							min={0}
-							value={avgTemp}
-							onChange={e => setAvgTemp(e.target.value === '' ? '' : Number(e.target.value))}
+							value={formData.avgTemp}
+							onChange={e =>
+								setFormData(prev => ({
+									...prev,
+									avgTemp: e.target.value === '' ? '' : Number(e.target.value),
+								}))
+							}
 							className='border p-2 flex-1 text-center'
 							placeholder='np. 20'
 						/>
@@ -127,8 +190,13 @@ function App() {
 						<div className='flex items-center gap-2'>
 							<label className='w-1/3 text-sm font-medium'>Rodzaj lokalu</label>
 							<select
-								value={localType}
-								onChange={e => setLocalType(e.target.value as any)}
+								value={formData.localType}
+								onChange={e =>
+									setFormData(prev => ({
+										...prev,
+										localType: e.target.value as any,
+									}))
+								}
 								className='border p-2 flex-1 text-center'>
 								<option value='mieszkalny'>Mieszkalny</option>
 								<option value='niemieszkalny'>Niemieszkalny / Użytkowy</option>
@@ -136,13 +204,18 @@ function App() {
 							</select>
 						</div>
 
-						{localType === 'inny' && (
+						{formData.localType === 'inny' && (
 							<div className='flex items-center gap-2'>
 								<label className='w-1/3 text-sm font-medium'>Rodzaj (opis)</label>
 								<input
 									type='text'
-									value={otherType}
-									onChange={e => setOtherType(e.target.value)}
+									value={formData.otherType}
+									onChange={e =>
+										setFormData(prev => ({
+											...prev,
+											otherType: e.target.value as any,
+										}))
+									}
 									className='border p-2 flex-1 text-center'
 									placeholder='Wpisz rodzaj lokalu'
 								/>
@@ -156,8 +229,13 @@ function App() {
 						<input
 							type='number'
 							min={0}
-							value={area}
-							onChange={e => setArea(e.target.value === '' ? '' : Number(e.target.value))}
+							value={formData.area}
+							onChange={e =>
+								setFormData(prev => ({
+									...prev,
+									area: e.target.value === '' ? '' : Number(e.target.value),
+								}))
+							}
 							className='border p-2 flex-1 text-center'
 							placeholder='np. 80'
 						/>
@@ -165,229 +243,14 @@ function App() {
 					</div>
 				</Modal>
 
-				<Modal
-					open={activeStep === 'termo'}
-					title='Inwentaryzacja budynku'
+				<ModalTermo open={activeStep === 'termo'} onClose={() => setActiveStep(null)} setFormData={setFormData} />
+
+				<ModalSources
+					open={activeStep === 'zrodla'}
 					onClose={() => setActiveStep(null)}
-					classes='bg-white p-6 rounded-xl shadow-md'
-					color='yellow'>
-					{(() => {
-						const [form, setForm] = useState({
-							funkcjaBudynku: '',
-							typBudynku: '',
-							kondygnacje: 1,
-							ksztaltBudynku: '',
-							obwodBudynku: '',
-							rokBudowy: '',
-							wysokoscKondygnacji: '',
-							ociepleniePodlogi: '',
-							ocieplenieDachu: '',
-							ocieplenieStropodachu: '',
-							stropNadPiwnica: '',
-							stanCO: '',
-							stopienOciepleniaScian: '',
-							gruboscOciepleniaScian: '',
-							ocieplenieStropow: '',
-							stanCWU: '',
-							wentylacja: '',
-							wymienionoOkna: 'nie',
-							rokWymianyOkien: 0,
-							rodzajOkien: '',
-							wymienionoDrzwi: 'nie',
-							rokWymianyDrzwi: 0,
-							planowanaTermo: 'nie',
-							planowanaTermoOpcje: [],
-							planowanaTermoInne: '',
-						})
-
-						const handleChange = (field: string, value: any) => setForm(prev => ({ ...prev, [field]: value }))
-
-						return (
-							<div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-								{/* w razie podziału na dwie kolumny można użyć klas grid grid-cols-1 md:grid-cols-2 gap-4, bez podziału space-y-4 */}
-								{/* 1. Funkcja Budynku */}
-								<FormField
-									label='Funkcja budynku'
-									optionsKey='buildingFunctions'
-									type='select'
-									value={form.funkcjaBudynku}
-									onChange={val => handleChange('funkcjaBudynku', val)}
-								/>
-								{/* 2. Typ budynku */}
-								<FormField
-									label='Typ budynku'
-									optionsKey='buildingType'
-									type='select'
-									value={form.typBudynku}
-									onChange={val => handleChange('typBudynku', val)}
-								/>
-								{/* 3. Liczba kondygnacji i kształt budynku */}
-								<DynamicFormField
-									label='Liczba kondygnacji i kształt budynku'
-									numberLabel='Podaj liczbę kondygnacji'
-									selectLabel='Wybierz kształt budynku'
-									value={form.kondygnacje}
-									onNumberChange={val => handleChange('kondygnacje', val)}
-									selectValue={form.ksztaltBudynku}
-									onSelectChange={val => handleChange('ksztaltBudynku', val)}
-									optionsMap={{
-										'1': data.buildingShape.oneFloor,
-										'2': data.buildingShape.twoFloors,
-										default: data.buildingShape.threeFloors,
-									}}
-								/>
-								<FormField
-									label='Obwód budynku (m)'
-									type='number'
-									value={form.obwodBudynku}
-									onChange={val => handleChange('obwodBudynku', val)}
-								/>
-								{/* 4. Rok budowy */}
-								<FormField
-									label='Rok budowy'
-									optionsKey='buildingYear'
-									type='select'
-									value={form.rokBudowy}
-									onChange={val => handleChange('rokBudowy', val)}
-								/>
-
-								{/* 5. Średnia wysokość kondygnacji */}
-								<FormField
-									label='Średnia wysokość kondygnacji (m)'
-									type='number'
-									value={form.wysokoscKondygnacji}
-									onChange={val => handleChange('wysokoscKondygnacji', val)}
-								/>
-
-								{/* 6. Grubość ocieplenia podłogi */}
-								<FormField
-									label='Grubość ocieplenia podłogi na gruncie lub stropu nad piwnicą/garażem'
-									optionsKey='insulationThickness'
-									type='select'
-									value={form.ociepleniePodlogi}
-									onChange={val => handleChange('ociepleniePodlogi', val)}
-								/>
-
-								{/* 7. Grubość ocieplenia Dachu */}
-								<FormField
-									label='Grubość ocieplenia dachu'
-									optionsKey='insulationThickness'
-									type='select'
-									value={form.ocieplenieDachu}
-									onChange={val => handleChange('ocieplenieDachu', val)}
-								/>
-								{/* 8. Grubość ocieplenia Stropodachu */}
-								<FormField
-									label='Grubość ocieplenia stropodachu'
-									optionsKey='insulationThickness'
-									type='select'
-									value={form.ocieplenieStropodachu}
-									onChange={val => handleChange('ocieplenieStropodachu', val)}
-								/>
-								{/* 9. Strop nad piwnicą */}
-								<FormField
-									label='Strop nad piwnicą'
-									optionsKey='basementCeiling'
-									type='select'
-									value={form.stropNadPiwnica}
-									onChange={val => handleChange('stropNadPiwnica', val)}
-								/>
-								{/* 10. Stan instalacji CO */}
-								<FormField
-									label='Stan instalacji Centralnego Ogrzewania (CO)'
-									optionsKey='heatingSystemState'
-									type='select'
-									value={form.stanCO}
-									onChange={val => handleChange('stanCO', val)}
-								/>
-								{/* 11. Stopień ocieplenia ścian */}
-								<FormField
-									label='Stopień ocieplenia ścian'
-									optionsKey='wallsInsulation'
-									type='select'
-									value={form.stopienOciepleniaScian}
-									onChange={val => handleChange('stopienOciepleniaScian', val)}
-								/>
-								{/* 12. Grubość ocieplenia ścian */}
-								<FormField
-									label='Grubość ocieplenia ścian'
-									optionsKey='insulationThickness'
-									type='select'
-									value={form.gruboscOciepleniaScian}
-									onChange={val => handleChange('gruboscOciepleniaScian', val)}
-								/>
-								{/* 13. Ocieplenie stropów */}
-								<FormField
-									label='Ocieplenie stropów'
-									optionsKey='heatingSystemState'
-									type='select'
-									value={form.ocieplenieStropow}
-									onChange={val => handleChange('ocieplenieStropow', val)}
-								/>
-								{/* 14. Stan instalacji CWU */}
-								<FormField
-									label='Stan instalacji Ciepłej Wody Użytkowej (CWU)'
-									optionsKey='heatingSystemState'
-									type='select'
-									value={form.stanCWU}
-									onChange={val => handleChange('stanCWU', val)}
-								/>
-								{/* 15. Rodzaj wentylacji */}
-								<FormField
-									label='Rodzaj wentylacji:'
-									optionsKey='ventilationType'
-									type='select'
-									value={form.wentylacja}
-									onChange={val => handleChange('wentylacja', val)}
-								/>
-								{/* …analogicznie kolejne selecty dla ocieplenieDachu, ocieplenieStropodachu itd. */}
-
-								{/* 16. Wymieniono stolarkę okienną */}
-								<ConditionalNumberField
-									label='Czy wymieniono stolarkę okienną?'
-									value={form.wymienionoOkna}
-									onValueChange={val => handleChange('wymienionoOkna', val)}
-									numberLabel='Rok wymiany'
-									numberValue={form.rokWymianyOkien}
-									onNumberChange={val => handleChange('rokWymianyOkien', val)}
-								/>
-
-								{/* 17. Rodzaj okien */}
-								<FormField
-									label='Rodzaj okien:'
-									optionsKey='windowsType'
-									type='select'
-									value={form.rodzajOkien}
-									onChange={val => handleChange('rodzajOkien', val)}
-								/>
-
-								{/* 18. Wymieniono stolarkę drzwiową */}
-								<ConditionalNumberField
-									label='Czy wymieniono drzwi zewnętrzne?'
-									value={form.wymienionoDrzwi}
-									onValueChange={val => handleChange('wymienionoDrzwi', val)}
-									numberLabel='Rok wymiany'
-									numberValue={form.rokWymianyDrzwi}
-									onNumberChange={val => handleChange('rokWymianyDrzwi', val)}
-								/>
-
-								{/* 16. Planowana termomodernizacja */}
-								<ConditionalMultiSelectField
-									label='Planowana termomodernizacja?'
-									value={form.planowanaTermo}
-									onValueChange={val => handleChange('planowanaTermo', val)}
-									options={data.plannedThermomodernization} // tablica z JSON-a
-									selectedOptions={form.planowanaTermoOpcje}
-									onOptionsChange={val => handleChange('planowanaTermoOpcje', val)}
-									otherValue={form.planowanaTermoInne}
-									onOtherChange={val => handleChange('planowanaTermoInne', val)}
-								/>
-							</div>
-						)
-					})()}
-				</Modal>
-
-				<ModalSources open={activeStep === 'zrodla'} onClose={() => setActiveStep(null)} />
+					setFormData={setFormData}
+					formData={formData}
+				/>
 
 				<Modal
 					open={activeStep === 'dane'}
@@ -402,8 +265,13 @@ function App() {
 						</label>
 						<input
 							type='text'
-							value={participantName}
-							onChange={e => setParticipantName(e.target.value)}
+							value={formData.participantName}
+							onChange={e =>
+								setFormData(prev => ({
+									...prev,
+									participantName: e.target.value as any,
+								}))
+							}
 							className='border p-2 w-full'
 							placeholder='np. Jan Kowalski'
 						/>
@@ -415,7 +283,7 @@ function App() {
 						<button
 							type='button'
 							onClick={() => {
-								const trimmed = participantName.trim()
+								const trimmed = formData.participantName.trim()
 								const lastSpaceIndex = trimmed.lastIndexOf(' ')
 
 								let first = trimmed
@@ -426,8 +294,14 @@ function App() {
 									last = trimmed.slice(lastSpaceIndex + 1) // wszystko po ostatniej spacji
 								}
 
-								setOwnerFirstName(first)
-								setOwnerLastName(last)
+								setFormData(prev => ({
+									...prev,
+									ownerFirstName: first as any,
+								}))
+								setFormData(prev => ({
+									...prev,
+									ownerLastName: last as any,
+								}))
 							}}
 							className='text-sm px-3 py-1 bg-gray-100 hover:bg-gray-200 rounded-md border'>
 							Jak wyżej
@@ -438,8 +312,13 @@ function App() {
 						<label className='block mb-1 text-sm font-medium'>Nazwisko właściciela/zarządcy lub nazwa firmy</label>
 						<input
 							type='text'
-							value={ownerLastName}
-							onChange={e => setOwnerLastName(e.target.value)}
+							value={formData.ownerLastName}
+							onChange={e =>
+								setFormData(prev => ({
+									...prev,
+									ownerLastName: e.target.value as any,
+								}))
+							}
 							className='border p-2 w-full'
 							placeholder='np. Kowalski / Firma XYZ'
 						/>
@@ -449,8 +328,13 @@ function App() {
 						<label className='block mb-1 text-sm font-medium'>Imię właściciela/zarządcy lub nazwa firmy</label>
 						<input
 							type='text'
-							value={ownerFirstName}
-							onChange={e => setOwnerFirstName(e.target.value)}
+							value={formData.ownerFirstName}
+							onChange={e =>
+								setFormData(prev => ({
+									...prev,
+									ownerFirstName: e.target.value as any,
+								}))
+							}
 							className='border p-2 w-full'
 							placeholder='np. Jan / Firma XYZ'
 						/>
@@ -461,8 +345,13 @@ function App() {
 						<label className='block mb-1 text-sm font-medium'>Adres e-mail właściciela</label>
 						<input
 							type='email'
-							value={ownerEmail}
-							onChange={e => setOwnerEmail(e.target.value)}
+							value={formData.ownerEmail}
+							onChange={e =>
+								setFormData(prev => ({
+									...prev,
+									ownerEmail: e.target.value as any,
+								}))
+							}
 							className='border p-2 w-full'
 							placeholder='np. jan@kowalski.pl'
 						/>
@@ -472,8 +361,13 @@ function App() {
 					<div>
 						<label className='block mb-1 text-sm font-medium'>Inne uwagi</label>
 						<textarea
-							value={notes}
-							onChange={e => setNotes(e.target.value)}
+							value={formData.notes}
+							onChange={e =>
+								setFormData(prev => ({
+									...prev,
+									notes: e.target.value as any,
+								}))
+							}
 							className='border p-2 w-full'
 							rows={3}
 							placeholder='Dodatkowe informacje…'
@@ -488,7 +382,11 @@ function App() {
 					classes='bg-white p-6 rounded-xl shadow-md'
 					color='yellow'>
 					{(() => {
-						const suma = dymowe + spalinowe + wentylacyjne + awaryjne
+						const suma =
+							formData.chimney.dymowe +
+							formData.chimney.spalinowe +
+							formData.chimney.wentylacyjne +
+							formData.chimney.awaryjne
 
 						return (
 							<div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
@@ -497,8 +395,13 @@ function App() {
 									<input
 										type='number'
 										min={0}
-										value={dymowe}
-										onChange={e => setDymowe(Number(e.target.value))}
+										value={formData.chimney.dymowe}
+										onChange={e =>
+											setFormData(prev => ({
+												...prev,
+												chimney: { ...prev.chimney, dymowe: Number(e.target.value) },
+											}))
+										}
 										className='border p-2 w-full text-center rounded'
 									/>
 								</div>
@@ -507,8 +410,13 @@ function App() {
 									<input
 										type='number'
 										min={0}
-										value={spalinowe}
-										onChange={e => setSpalinowe(Number(e.target.value))}
+										value={formData.chimney.spalinowe}
+										onChange={e =>
+											setFormData(prev => ({
+												...prev,
+												chimney: { ...prev.chimney, spalinowe: Number(e.target.value) },
+											}))
+										}
 										className='border p-2 w-full text-center rounded'
 									/>
 								</div>
@@ -517,8 +425,13 @@ function App() {
 									<input
 										type='number'
 										min={0}
-										value={wentylacyjne}
-										onChange={e => setWentylacyjne(Number(e.target.value))}
+										value={formData.chimney.wentylacyjne}
+										onChange={e =>
+											setFormData(prev => ({
+												...prev,
+												chimney: { ...prev.chimney, wentylacyjne: Number(e.target.value) },
+											}))
+										}
 										className='border p-2 w-full text-center rounded'
 									/>
 								</div>
@@ -527,8 +440,13 @@ function App() {
 									<input
 										type='number'
 										min={0}
-										value={awaryjne}
-										onChange={e => setAwaryjne(Number(e.target.value))}
+										value={formData.chimney.awaryjne}
+										onChange={e =>
+											setFormData(prev => ({
+												...prev,
+												chimney: { ...prev.chimney, awaryjne: Number(e.target.value) },
+											}))
+										}
 										className='border p-2 w-full text-center rounded'
 									/>
 								</div>
@@ -546,7 +464,11 @@ function App() {
 				<Modal
 					open={activeStep === 'wysylka'}
 					title='Adres i funkcja'
-					onClose={() => setActiveStep(null)}
+					onClose={() => {
+						setActiveStep(null)
+						console.log(formData)
+						generatePDF(formData)
+					}}
 					classes='bg-white p-6 rounded-xl shadow-md'
 					color='green'>
 					<input type='text' placeholder='Miejscowość' className='border p-2 w-full mb-2 text-center' />

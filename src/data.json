@@ -136,6 +136,16 @@
 			"pellet/brykiet drzewny",
 			"inna biomasa",
 			"drewno kawałkowe"
+		],
+		"stoveKitchen": [
+			"węgiel orzech",
+			"węgiel kostka",
+			"węgiel groszek",
+			"węgiel miał",
+			"węgiel brunatny",
+			"pellet/brykiet drzewny",
+			"inna biomasa",
+			"drewno kawałkowe"
 		]
 	},
 	"heatingSources": {

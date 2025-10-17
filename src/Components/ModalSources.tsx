@@ -1,15 +1,22 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Modal from './Modal'
 import HeatSource from './HeatSource'
 import type { HeatSourceData } from '../types'
+import type { FormData } from '../types'
 
 interface ModalSourcesProps {
 	open: boolean
 	onClose: () => void
+	formData: FormData
+	setFormData: React.Dispatch<React.SetStateAction<FormData>>
 }
 
-const ModalSources: React.FC<ModalSourcesProps> = ({ open, onClose }) => {
-	const [sources, setSources] = useState<HeatSourceData[]>([])
+const ModalSources: React.FC<ModalSourcesProps> = ({ open, onClose, formData, setFormData }) => {
+	const [sources, setSources] = useState<HeatSourceData[]>(formData.sources || [])
+
+	useEffect(() => {
+		if (open) setSources(formData.sources || [])
+	}, [formData.sources, open])
 
 	const updateSource = (index: number, newData: Partial<HeatSourceData>) => {
 		setSources(prev => prev.map((s, i) => (i === index ? { ...s, ...newData } : s)))
@@ -39,7 +46,7 @@ const ModalSources: React.FC<ModalSourcesProps> = ({ open, onClose }) => {
 				dataSourceOther: '',
 				pumpType: '',
 				collectorsNumber: '',
-				photovoltaicsNumber: ''
+				photovoltaicsNumber: '',
 			},
 		])
 
@@ -47,12 +54,17 @@ const ModalSources: React.FC<ModalSourcesProps> = ({ open, onClose }) => {
 
 	const removeSource = (index: number) => setSources(prev => prev.filter((_, i) => i !== index))
 
+	const handleClose = () => {
+		setFormData(prev => ({ ...prev, sources }))
+		onClose()
+	}
+
 	return (
 		<Modal
 			color='yellow'
 			open={open}
 			title='Źródła ciepła'
-			onClose={onClose}
+			onClose={handleClose}
 			classes='bg-white p-6 rounded-xl shadow-md'>
 			{sources.map((source, idx) => (
 				<HeatSource

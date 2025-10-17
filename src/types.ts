@@ -36,3 +36,60 @@ export interface HeatSourceData {
 	collectorsNumber: number | ''
 	photovoltaicsNumber: number | ''
 }
+
+export interface FormData {
+	// Etap 1: lokal
+	avgTemp: number | ''
+	localType: 'mieszkalny' | 'niemieszkalny' | 'inny'
+	otherType: string
+	area: number | ''
+	addressCity: string
+	addressStreet: string
+
+	// Etap 2: dane uczestnika / właściciela
+	participantName: string
+	ownerLastName: string
+	ownerFirstName: string
+	ownerEmail: string
+	notes: string
+
+	// Etap 3: przewody kominowe
+	chimney: {
+		dymowe: number
+		spalinowe: number
+		wentylacyjne: number
+		awaryjne: number
+	}
+
+	// Etap 4: inwentaryzacja budynku
+	building: {
+		funkcjaBudynku: string
+		typBudynku: string
+		kondygnacje: number
+		ksztaltBudynku: string
+		obwodBudynku: string
+		rokBudowy: string
+		wysokoscKondygnacji: string
+		ociepleniePodlogi: string
+		ocieplenieDachu: string
+		ocieplenieStropodachu: string
+		stropNadPiwnica: string
+		stanCO: string
+		stopienOciepleniaScian: string
+		gruboscOciepleniaScian: string
+		ocieplenieStropow: string
+		stanCWU: string
+		wentylacja: string
+		wymienionoOkna: 'tak' | 'nie'
+		rokWymianyOkien: number
+		rodzajOkien: string
+		wymienionoDrzwi: 'tak' | 'nie'
+		rokWymianyDrzwi: number
+		planowanaTermo: 'tak' | 'nie'
+		planowanaTermoOpcje: string[]
+		planowanaTermoInne: string
+	}
+
+	// Etap 5: źródła ciepła
+	sources: HeatSourceData[]
+}
